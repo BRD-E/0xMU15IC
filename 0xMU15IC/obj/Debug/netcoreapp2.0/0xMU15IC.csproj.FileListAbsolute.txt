@@ -1,0 +1,11 @@
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\bin\Debug\netcoreapp2.0\0xMU15IC.deps.json
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\bin\Debug\netcoreapp2.0\0xMU15IC.runtimeconfig.json
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\bin\Debug\netcoreapp2.0\0xMU15IC.runtimeconfig.dev.json
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\bin\Debug\netcoreapp2.0\0xMU15IC.dll
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\bin\Debug\netcoreapp2.0\0xMU15IC.pdb
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.csprojResolveAssemblyReference.cache
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.csproj.CoreCompileInputs.cache
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.AssemblyInfoInputs.cache
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.AssemblyInfo.cs
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.dll
+C:\Users\BRD-E\Documents\git\0xMU15IC\0xMU15IC\obj\Debug\netcoreapp2.0\0xMU15IC.pdb
