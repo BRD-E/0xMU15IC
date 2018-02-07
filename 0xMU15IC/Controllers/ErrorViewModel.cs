@@ -1,5 +1,3 @@
-using System;
-
 namespace _0xMU15IC.Models
 {
     public class ErrorViewModel

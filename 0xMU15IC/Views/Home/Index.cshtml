@@ -1,41 +1,186 @@
-﻿@{
-    ViewData["Title"] = "Project: 0xMusic";
+﻿﻿
+@{
+    ViewBag.Title = "Index";
 }
+
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
 
-    <title>OxMusic Home</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-
-    <!-- Custom styles for this template -->
-
-
-</head>
-
-<body>
-    <div class="well">
-        <strong>Boo yea</strong>
-    </div>
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        #holder {
+            border: 10px dashed #ccc;
+            width: 85%;
+            min-height: 300px;
+            margin: 20px 100px 20px 100px;
+        }
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            #holder.hover {
+                border: 10px dashed #0c0;
+            }
 
-    <!-- Latest compiled JavaScript -->
+            #holder img {
+                display: block;
+                margin: 10px auto;
+            }
+
+            #holder p {
+                margin: 10px;
+                font-size: 14px;
+            }
+
+        progress {
+            width: 85%;
+        }
+
+            progress:after {
+                content: '%';
+            }
+
+        .fail {
+            background: #c00;
+            padding: 2px;
+            color: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="well text-center">
+        <h1>0z Mx</h1>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-6">
+            test
+        </div>
+        <div class="col-md-6">
+            <div id="holder">
+            </div>
+
+            <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
+            <p id="filereader">File API & FileReader API not supported</p>
+            <p id="formdata">XHR2's FormData is not supported</p>
+            <p id="progress">XHR2's upload progress isn't supported</p>
+            <p>Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
+            <p>Drag an image from your desktop on to the drop zone above to see the browser both render the preview, but also upload automatically to this server.</p>
+        </div>
+    </div>
+
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var holder = document.getElementById('holder'),
+            tests = {
+                filereader: typeof FileReader != 'undefined',
+                dnd: 'draggable' in document.createElement('span'),
+                formdata: !!window.FormData,
+                progress: "upload" in new XMLHttpRequest
+            },
+            support = {
+                filereader: document.getElementById('filereader'),
+                formdata: document.getElementById('formdata'),
+                progress: document.getElementById('progress')
+            },
+            acceptedTypes = {
+                'image/png': true,
+                'image/jpeg': true,
+                'image/gif': true
+            },
+            progress = document.getElementById('uploadprogress'),
+            fileupload = document.getElementById('upload');
 
+        "filereader formdata progress".split(' ').forEach(function (api) {
+            if (tests[api] === false) {
+                support[api].className = 'fail';
+            } else {
+                // FFS. I could have done el.hidden = true, but IE doesn't support
+                // hidden, so I tried to create a polyfill that would extend the
+                // Element.prototype, but then IE10 doesn't even give me access
+                // to the Element object. Brilliant.
+                support[api].className = 'hidden';
+            }
+        });
 
+        function previewfile(file) {
+            if (tests.filereader === true && acceptedTypes[file.type] === true) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var image = new Image();
+                    image.src = event.target.result;
+                    image.width = 250; // a fake resize
+                    holder.appendChild(image);
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size / 1024 | 0) + 'K' : '');
+                console.log(file);
+            }
+        }
+
+        function readfiles(files) {
+            debugger;
+            var formData = tests.formdata ? new FormData() : null;
+            for (var i = 0; i < files.length; i++) {
+                if (tests.formdata) formData.append('file', files[i]);
+                previewfile(files[i]);
+            }
+
+            // now post a new XHR request
+            if (tests.formdata) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/devnull.php');
+                xhr.onload = function () {
+                    progress.value = progress.innerHTML = 100;
+                };
+
+                if (tests.progress) {
+                    xhr.upload.onprogress = function (event) {
+                        if (event.lengthComputable) {
+                            var complete = (event.loaded / event.total * 100 | 0);
+                            progress.value = progress.innerHTML = complete;
+                        }
+                    }
+                }
+
+                xhr.send(formData);
+            }
+        }
+
+        if (tests.dnd) {
+            holder.ondragover = function () { this.className = 'hover'; return false; };
+            holder.ondragend = function () { this.className = ''; return false; };
+            holder.ondrop = function (e) {
+                this.className = '';
+                e.preventDefault();
+                readfiles(e.dataTransfer.files);
+            }
+        } else {
+            fileupload.className = 'hidden';
+            fileupload.querySelector('input').onchange = function () {
+                readfiles(this.files);
+            };
+        }
+
+    </script>
 </body>
-
 </html>
