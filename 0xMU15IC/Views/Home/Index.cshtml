@@ -10,50 +10,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>0xMusic</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
-        #holder {
-            border: 10px dashed #ccc;
-            width: 85%;
-            min-height: 300px;
-            margin: 20px 100px 20px 100px;
-        }
-
-        #holder.hover {
-            border: 10px dashed #0c0;
-        }
-
-        #holder img {
-            display: block;
-            margin: 10px auto;
-        }
-
-        #holder p {
-            margin: 10px;
-            font-size: 14px;
-        }
         #musicUploadBox {
+            /*
             border: 10px dashed #ccc;
             width: 85%;
             min-height: 300px;
             margin: 20px 100px 20px 100px;
+            */
+            min-height: 300px;
+            background-color: #dde3e9;
         }
 
-        #musicUploadBox.hover {
-            border: 10px dashed #0c0;
+        #musicUploadBox:hover 
+        {
+            background-color: #b6bfc8;
         }
-
-        #musicUploadBox img {
-            display: block;
-            margin: 10px auto;
-        }
-
-        #musicUploadBox p {
-            margin: 10px;
-            font-size: 14px;
+        #musicUploadBox:drop {
+            background-color: #b6bfc8;
         }
         progress {
             width: 85%;
@@ -84,23 +62,25 @@
     <div class="well text-center">
         <h1>0z Mx</h1>
     </div>
-    <div class="row text-center">
-        <div class="col-md-6">
-            test
-        </div>
-        <div class="col-md-6">
-            <div id="musicUploadBox">
-                <ul id="musicList" class="list-group">
-                </ul>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <div class="col-md-6">
+                test
             </div>
-            <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
-            <p id="filereader">File API & FileReader API not supported</p>
-            <p id="formdata">XHR2's FormData is not supported</p>
-            <p id="progress">XHR2's upload progress isn't supported</p>
-            <p>Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
-            <p>Drag an image from your desktop on to the drop zone above to see the browser both render the preview, but also upload automatically to this server.</p>
+            <div class="col-md-6">
+                <div id="musicUploadBox">
+                    <ul id="musicList" class="list-group"></ul>
+                </div>
+                <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
+                <p id="filereader">File API & FileReader API not supported</p>
+                <p id="formdata">XHR2's FormData is not supported</p>
+                <p id="progress">XHR2's upload progress isn't supported</p>
+                <p>Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
+                <p>Drag an image from your desktop on to the drop zone above to see the browser both render the preview, but also upload automatically to this server.</p>
+            </div>
         </div>
     </div>
+    
 
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
