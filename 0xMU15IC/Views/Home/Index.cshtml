@@ -22,27 +22,46 @@
             margin: 20px 100px 20px 100px;
         }
 
-            #holder.hover {
-                border: 10px dashed #0c0;
-            }
+        #holder.hover {
+            border: 10px dashed #0c0;
+        }
 
-            #holder img {
-                display: block;
-                margin: 10px auto;
-            }
+        #holder img {
+            display: block;
+            margin: 10px auto;
+        }
 
-            #holder p {
-                margin: 10px;
-                font-size: 14px;
-            }
+        #holder p {
+            margin: 10px;
+            font-size: 14px;
+        }
+        #musicUploadBox {
+            border: 10px dashed #ccc;
+            width: 85%;
+            min-height: 300px;
+            margin: 20px 100px 20px 100px;
+        }
 
+        #musicUploadBox.hover {
+            border: 10px dashed #0c0;
+        }
+
+        #musicUploadBox img {
+            display: block;
+            margin: 10px auto;
+        }
+
+        #musicUploadBox p {
+            margin: 10px;
+            font-size: 14px;
+        }
         progress {
             width: 85%;
         }
 
-            progress:after {
-                content: '%';
-            }
+        progress:after {
+            content: '%';
+        }
 
         .fail {
             background: #c00;
@@ -70,9 +89,10 @@
             test
         </div>
         <div class="col-md-6">
-            <div id="holder">
+            <div id="musicUploadBox">
+                <ul id="musicList" class="list-group">
+                </ul>
             </div>
-
             <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
             <p id="filereader">File API & FileReader API not supported</p>
             <p id="formdata">XHR2's FormData is not supported</p>
@@ -88,30 +108,36 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        var holder = document.getElementById('holder'),
-            tests = {
+        var tests =
+        {
                 filereader: typeof FileReader != 'undefined',
                 dnd: 'draggable' in document.createElement('span'),
                 formdata: !!window.FormData,
                 progress: "upload" in new XMLHttpRequest
-            },
-            support = {
-                filereader: document.getElementById('filereader'),
-                formdata: document.getElementById('formdata'),
-                progress: document.getElementById('progress')
-            },
-            acceptedTypes = {
+        }
+        var support =
+        {
+            filereader: document.getElementById('filereader'),
+            formdata: document.getElementById('formdata'),
+            progress: document.getElementById('progress')
+        }
+        var acceptedTypes =
+        {
                 'image/png': true,
                 'image/jpeg': true,
                 'image/gif': true
-            },
-            progress = document.getElementById('uploadprogress'),
-            fileupload = document.getElementById('upload');
-
-        "filereader formdata progress".split(' ').forEach(function (api) {
-            if (tests[api] === false) {
+        }
+        var progress = document.getElementById('uploadprogress');
+        var fileupload = document.getElementById('upload');
+        var musicList = document.getElementById('musicList');
+        var musicUploadBox = document.getElementById('musicUploadBox');
+        "filereader formdata progress".split(' ').forEach(function (api)
+        {
+            if (tests[api] === false)
+            {
                 support[api].className = 'fail';
-            } else {
+            } else
+            {
                 // FFS. I could have done el.hidden = true, but IE doesn't support
                 // hidden, so I tried to create a polyfill that would extend the
                 // Element.prototype, but then IE10 doesn't even give me access
@@ -120,42 +146,39 @@
             }
         });
 
-        function previewfile(file) {
-            if (tests.filereader === true && acceptedTypes[file.type] === true) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var image = new Image();
-                    image.src = event.target.result;
-                    image.width = 250; // a fake resize
-                    holder.appendChild(image);
-                };
-
-                reader.readAsDataURL(file);
-            } else {
-                holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size / 1024 | 0) + 'K' : '');
-                console.log(file);
-            }
+        function previewfile(file)
+        {
+            musicList.innerHTML += '<li class="list-group-item">' + file.name + ' ' + file.size + '</li>';
+            console.log(file);
         }
 
-        function readfiles(files) {
-            debugger;
+        function readfiles(files)
+        {
             var formData = tests.formdata ? new FormData() : null;
-            for (var i = 0; i < files.length; i++) {
-                if (tests.formdata) formData.append('file', files[i]);
+            for (var i = 0; i < files.length; i++)
+            {
+                if (tests.formdata) {
+                    formData.append('file', files[i]);
+                }
                 previewfile(files[i]);
             }
 
             // now post a new XHR request
-            if (tests.formdata) {
+            if (tests.formdata)
+            {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', '/devnull.php');
-                xhr.onload = function () {
+                xhr.onload = function ()
+                {
                     progress.value = progress.innerHTML = 100;
                 };
 
-                if (tests.progress) {
-                    xhr.upload.onprogress = function (event) {
-                        if (event.lengthComputable) {
+                if (tests.progress)
+                {
+                    xhr.upload.onprogress = function (event)
+                    {
+                        if (event.lengthComputable)
+                        {
                             var complete = (event.loaded / event.total * 100 | 0);
                             progress.value = progress.innerHTML = complete;
                         }
@@ -166,17 +189,29 @@
             }
         }
 
-        if (tests.dnd) {
-            holder.ondragover = function () { this.className = 'hover'; return false; };
-            holder.ondragend = function () { this.className = ''; return false; };
-            holder.ondrop = function (e) {
+        if (tests.dnd)
+        {
+            musicUploadBox.ondragover = function ()
+            {
+                this.className = 'hover';
+                return false;
+            };
+            musicUploadBox.ondragend = function ()
+            {
+                this.className = '';
+                return false;
+            };
+            musicUploadBox.ondrop = function (e)
+            {
                 this.className = '';
                 e.preventDefault();
                 readfiles(e.dataTransfer.files);
             }
-        } else {
+        } else
+        {
             fileupload.className = 'hidden';
-            fileupload.querySelector('input').onchange = function () {
+            fileupload.querySelector('input').onchange = function ()
+            {
                 readfiles(this.files);
             };
         }
