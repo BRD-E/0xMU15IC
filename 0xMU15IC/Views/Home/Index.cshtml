@@ -123,7 +123,9 @@
         {
             hash[file.name] = file;
             if (tests.filereader === true && acceptedTypes[file.type] === true) {
-                musicList.innerHTML += '<li class="list-group-item" data-toggle="collapse" href="#songCollapse' + songCount + '">' + file.name + ' ' + file.size + '<div id="songCollapse' + songCount + '" class="panel- collapse collapse">' + getSongInfo(file) + '</div></li>';
+                musicList.innerHTML += '<li class="list-group-item" data-toggle="collapse" href="#songCollapse' + songCount + '">' + file.name + '</li>';
+                musicList.innerHTML += '<div id="songCollapse' + songCount + '" class="panel- collapse collapse"><li class="list-group-item collapse">' + getSongInfo(file) + '</li></div>';
+
                 songCount += 1;
                 console.log(file);
             }
