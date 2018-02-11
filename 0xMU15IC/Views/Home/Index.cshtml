@@ -80,86 +80,68 @@
             </div>
         </div>
     </div>
-    
 
-    
+
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.0/jsmediatags.js"></script>
     <script>
         var songCount = 0;
-        var jsmediatags = window.jsmediatags;
-        function test(file) {
-            // TEST URL : "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-            jsmediatags.read(file, {
-                onSuccess: function (tag) {
-                    var tags = tag.tags;
-                    console.log(tags.artist + " - " + tags.title + ", " + tags.album);
-                }
-            });
-        }
-
         var tests =
-        {
+            {
                 filereader: typeof FileReader != 'undefined',
                 dnd: 'draggable' in document.createElement('span'),
                 formdata: !!window.FormData,
                 progress: "upload" in new XMLHttpRequest
-        }
+            }
         var support =
-        {
-            filereader: document.getElementById('filereader'),
-            formdata: document.getElementById('formdata'),
-            progress: document.getElementById('progress')
-        }
+            {
+                filereader: document.getElementById('filereader'),
+                formdata: document.getElementById('formdata'),
+                progress: document.getElementById('progress')
+            }
         var acceptedTypes =
-        {
-                'image/png': true,
-                'image/jpeg': true,
-                'image/gif': true,
+            {
                 'audio/mpeg': true,
-        }
+            }
         var progress = document.getElementById('uploadprogress');
         var fileupload = document.getElementById('upload');
         var musicList = document.getElementById('musicList');
         var musicUploadBox = document.getElementById('musicUploadBox');
-        "filereader formdata progress".split(' ').forEach(function (api)
-        {
-            if (tests[api] === false)
-            {
+        "filereader formdata progress".split(' ').forEach(function (api) {
+            if (tests[api] === false) {
                 support[api].className = 'fail';
-            } else
-            {
+            } else {
                 support[api].className = 'hidden';
             }
         });
 
+        var hash = {};
         function previewfile(file)
         {
-            if (tests.filereader === true && acceptedTypes[file.type] === true)
-            {
+            hash[file.name] = file;
+            if (tests.filereader === true && acceptedTypes[file.type] === true) {
                 musicList.innerHTML += '<li class="list-group-item" data-toggle="collapse" href="#songCollapse' + songCount + '">' + file.name + ' ' + file.size + '<div id="songCollapse' + songCount + '" class="panel- collapse collapse">' + getSongInfo(file) + '</div></li>';
                 songCount += 1;
                 console.log(file);
-                test(file);
+                console.log("-----")
+                testing(file);
+                console.log("-----")
             }
-            else
-            {
-                musicList.innerHTML += '<li class="list-group-item">' + file.name + ' ' + file.size + '</li>';
+            else {
+                musicList.innerHTML += '<li class="list-group-item">FILE TYPE NOT SUPPORTED: ' + file.name + '</li>';
                 console.log(file);
             }
         }
-        function getSongInfo(file)
-        {
+
+        function getSongInfo(file) {
             return file.name;
         }
-        function readfiles(files)
-        {
+        function readfiles(files) {
             var formData = tests.formdata ? new FormData() : null;
-            for (var i = 0; i < files.length; i++)
-            {
+            for (var i = 0; i < files.length; i++) {
                 if (tests.formdata) {
                     formData.append('file', files[i]);
                 }
@@ -167,21 +149,16 @@
             }
 
             // now post a new XHR request
-            if (tests.formdata)
-            {
+            if (tests.formdata) {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', '/devnull.php');
-                xhr.onload = function ()
-                {
+                xhr.onload = function () {
                     progress.value = progress.innerHTML = 100;
                 };
 
-                if (tests.progress)
-                {
-                    xhr.upload.onprogress = function (event)
-                    {
-                        if (event.lengthComputable)
-                        {
+                if (tests.progress) {
+                    xhr.upload.onprogress = function (event) {
+                        if (event.lengthComputable) {
                             var complete = (event.loaded / event.total * 100 | 0);
                             progress.value = progress.innerHTML = complete;
                         }
@@ -191,29 +168,23 @@
             }
         }
 
-        if (tests.dnd)
-        {
-            musicUploadBox.ondragover = function ()
-            {
+        if (tests.dnd) {
+            musicUploadBox.ondragover = function () {
                 this.className = 'hover';
                 return false;
             };
-            musicUploadBox.ondragend = function ()
-            {
+            musicUploadBox.ondragend = function () {
                 this.className = '';
                 return false;
             };
-            musicUploadBox.ondrop = function (e)
-            {
+            musicUploadBox.ondrop = function (e) {
                 this.className = '';
                 e.preventDefault();
                 readfiles(e.dataTransfer.files);
             }
-        } else
-        {
+        } else {
             fileupload.className = 'hidden';
-            fileupload.querySelector('input').onchange = function ()
-            {
+            fileupload.querySelector('input').onchange = function () {
                 readfiles(this.files);
             };
         }
