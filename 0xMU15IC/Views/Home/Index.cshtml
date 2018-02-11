@@ -87,7 +87,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.0/jsmediatags.js"></script>
     <script>
+        var songCount = 0;
+        var jsmediatags = window.jsmediatags;
+        function test(file) {
+            // TEST URL : "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+            jsmediatags.read(file, {
+                onSuccess: function (tag) {
+                    var tags = tag.tags;
+                    console.log(tags.artist + " - " + tags.title + ", " + tags.album);
+                }
+            });
+        }
+
         var tests =
         {
                 filereader: typeof FileReader != 'undefined',
@@ -105,7 +118,8 @@
         {
                 'image/png': true,
                 'image/jpeg': true,
-                'image/gif': true
+                'image/gif': true,
+                'audio/mpeg': true,
         }
         var progress = document.getElementById('uploadprogress');
         var fileupload = document.getElementById('upload');
@@ -118,20 +132,29 @@
                 support[api].className = 'fail';
             } else
             {
-                // FFS. I could have done el.hidden = true, but IE doesn't support
-                // hidden, so I tried to create a polyfill that would extend the
-                // Element.prototype, but then IE10 doesn't even give me access
-                // to the Element object. Brilliant.
                 support[api].className = 'hidden';
             }
         });
 
         function previewfile(file)
         {
-            musicList.innerHTML += '<li class="list-group-item">' + file.name + ' ' + file.size + '</li>';
-            console.log(file);
+            if (tests.filereader === true && acceptedTypes[file.type] === true)
+            {
+                musicList.innerHTML += '<li class="list-group-item" data-toggle="collapse" href="#songCollapse' + songCount + '">' + file.name + ' ' + file.size + '<div id="songCollapse' + songCount + '" class="panel- collapse collapse">' + getSongInfo(file) + '</div></li>';
+                songCount += 1;
+                console.log(file);
+                test(file);
+            }
+            else
+            {
+                musicList.innerHTML += '<li class="list-group-item">' + file.name + ' ' + file.size + '</li>';
+                console.log(file);
+            }
         }
-
+        function getSongInfo(file)
+        {
+            return file.name;
+        }
         function readfiles(files)
         {
             var formData = tests.formdata ? new FormData() : null;
@@ -164,7 +187,6 @@
                         }
                     }
                 }
-
                 xhr.send(formData);
             }
         }
