@@ -139,6 +139,8 @@
         }
         function play(fileName) {
             console.log(fileName);
+            console.log(hash[fileName]);
+            new Audio(URL.createObjectURL(hash[fileName])).play();
 
         }
         function readfiles(files) {
