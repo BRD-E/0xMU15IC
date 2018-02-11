@@ -126,9 +126,6 @@
                 musicList.innerHTML += '<li class="list-group-item" data-toggle="collapse" href="#songCollapse' + songCount + '">' + file.name + ' ' + file.size + '<div id="songCollapse' + songCount + '" class="panel- collapse collapse">' + getSongInfo(file) + '</div></li>';
                 songCount += 1;
                 console.log(file);
-                console.log("-----")
-                testing(file);
-                console.log("-----")
             }
             else {
                 musicList.innerHTML += '<li class="list-group-item">FILE TYPE NOT SUPPORTED: ' + file.name + '</li>';
@@ -137,7 +134,12 @@
         }
 
         function getSongInfo(file) {
-            return file.name;
+
+            return '<span onclick=play("'+file.name+'") class="glyphicon glyphicon-play pull-left" ></span>' + file.name;
+        }
+        function play(fileName) {
+            console.log(fileName);
+
         }
         function readfiles(files) {
             var formData = tests.formdata ? new FormData() : null;
